@@ -1,7 +1,7 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { signIn, getSession } from '@/lib/supabase'
+import { signIn } from '@/lib/supabase'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -9,10 +9,6 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    getSession().then(s => { if (s) router.replace('/admin') })
-  }, [])
 
   async function handleLogin() {
     setError('')
