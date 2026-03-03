@@ -87,8 +87,7 @@ export async function incrementView(articleId: number) {
 }
 
 export async function upsertArticle(article: Partial<Article>) {
-  const clean = { ...article }
-  delete clean.categories
+  const { categories, ...clean } = article as any
   const { data, error } = await supabase
     .from('articles')
     .upsert(clean)
