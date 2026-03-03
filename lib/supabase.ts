@@ -50,7 +50,7 @@ export async function getCategories() {
 export async function getPublishedArticles(categoryId?: number) {
   let q = supabase
     .from('articles')
-    .select('*, categories(*)')
+    .select('*')
     .eq('status', 'published')
     .order('published_at', { ascending: false })
   if (categoryId) q = q.eq('category_id', categoryId)
@@ -62,7 +62,7 @@ export async function getPublishedArticles(categoryId?: number) {
 export async function getAllArticles() {
   const { data, error } = await supabase
     .from('articles')
-    .select('*, categories(*)')
+    .select('*')
     .order('created_at', { ascending: false })
   if (error) throw error
   return data as Article[]
@@ -71,7 +71,7 @@ export async function getAllArticles() {
 export async function getArticleById(id: number) {
   const { data, error } = await supabase
     .from('articles')
-    .select('*, categories(*)')
+    .select('*')
     .eq('id', id)
     .single()
   if (error) throw error
@@ -87,9 +87,11 @@ export async function incrementView(articleId: number) {
 }
 
 export async function upsertArticle(article: Partial<Article>) {
+  const clean = { ...article }
+  delete clean.categories
   const { data, error } = await supabase
     .from('articles')
-    .upsert(article)
+    .upsert(clean)
     .select()
     .single()
   if (error) throw error
