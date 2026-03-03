@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body { font-family: 'IBM Plex Sans Thai', 'Outfit', sans-serif; -webkit-font-smoothing: antialiased; }
+
+.rte-toolbar { display: flex; flex-wrap: wrap; gap: 4px; padding: 8px; background: #f1f5f9; border: 2px solid #e2e8f0; border-bottom: none; border-radius: 8px 8px 0 0; }
+.rte-btn { width: 34px; height: 34px; border: 1px solid transparent; background: transparent; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 700; color: #64748b; display: flex; align-items: center; justify-content: center; }
+.rte-btn:hover { background: #fff; border-color: #e2e8f0; color: #0f172a; }
+.rte-divider { width: 1px; height: 28px; background: #e2e8f0; margin: 3px 4px; }
+.rte-color { width: 30px; height: 30px; border: 2px solid #e2e8f0; border-radius: 6px; cursor: pointer; padding: 2px; }
+.rte-editor { border: 2px solid #e2e8f0; border-top: none; border-radius: 0 0 8px 8px; min-height: 200px; padding: 14px; font-size: 15px; line-height: 1.7; outline: none; background: #fff; }
+.rte-editor:focus { border-color: #06b6d4; }
+.rte-editor img { max-width: 100%; border-radius: 8px; margin: 8px 0; }
+
+.article-content p { font-size: 15px; line-height: 1.85; margin-bottom: 14px; }
+.article-content img { max-width: 100%; border-radius: 10px; margin: 12px 0; }
+.article-content a { color: #0e7490; text-decoration: underline; }
+
+.upload-zone { border: 2px dashed #e2e8f0; border-radius: 8px; padding: 24px; text-align: center; cursor: pointer; transition: all .2s; background: #f8fafc; position: relative; overflow: hidden; }
+.upload-zone:hover { border-color: #06b6d4; background: #ecfeff; }
+.upload-zone.has-image { padding: 0; border-style: solid; }
+.upload-zone img { width: 100%; height: 160px; object-fit: cover; display: block; }
+.upload-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .2s; color: #fff; font-weight: 600; font-size: 13px; }
+.upload-zone.has-image:hover .upload-overlay { opacity: 1; }
+
+.stats-bar { height: 26px; border-radius: 6px; transition: width .6s ease; min-width: 40px; }
+
+.toast-anim { animation: toastIn .3s ease, toastOut .3s ease 2.2s forwards; }
+@keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(20px); } }
+@keyframes toastOut { to { opacity: 0; transform: translateX(-50%) translateY(20px); } }
