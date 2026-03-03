@@ -137,7 +137,7 @@ function AdminInner() {
           </div>
           <div>
             <label className="block text-xs font-semibold text-slate-500 mb-1.5 uppercase">รูปปก</label>
-            <ImageUpload value={editing.cover_image || ''} onChange={(url, file) => { setEditing(p => ({ ...p!, cover_image: url })); if (file) setCoverFile(file) }} label="อัปโหลดรูปปกบทความ" recWidth={800} recHeight={450} />
+            <ImageUpload value={editing.cover_image || ''} onChange={(url, file) => { setEditing(p => ({ ...p!, cover_image: url })); if (file) setCoverFile(file) }} label="อัปโหลดรูปปกบทความ" recWidth={1048} recHeight={1048} />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -243,7 +243,7 @@ function AdminInner() {
             <div className="space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-500 mb-1.5 uppercase">รูป Banner</label>
-                <ImageUpload value={banner?.image || ''} onChange={(url, file) => { setBanner(p => p ? { ...p, image: url } : p); if (file) setBnFile(file) }} label="อัปโหลดรูป Banner" recWidth={800} recHeight={340} />
+                <ImageUpload value={banner?.image || ''} onChange={(url, file) => { setBanner(p => p ? { ...p, image: url } : p); if (file) setBnFile(file) }} label="อัปโหลดรูป Banner" recWidth={1048} recHeight={1048} />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-slate-500 mb-1.5 uppercase">หัวข้อ</label>
