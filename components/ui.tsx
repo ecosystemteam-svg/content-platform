@@ -71,4 +71,86 @@ export function ImageUpload({ value, onChange, label, recWidth, recHeight }: Ima
   return (
     <div>
       <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
-      <div className={`upload-zone ${value ? 'has-image' : ''}`} onClick={() => inputRef
+      <div className={`upload-zone ${value ? 'has-image' : ''}`} onClick={() => inputRef.current?.click()}>
+        {value ? (
+          <>
+            <img src={value} alt="" />
+            <div className="upload-overlay">เปลี่ยนรูป</div>
+          </>
+        ) : (
+          <div className="text-slate-400">
+            <p className="text-sm">{label || 'อัปโหลดรูปภาพ'}</p>
+            <p className="text-xs mt-1">PNG, JPG — กดเพื่อเลือกไฟล์</p>
+            {recLabel && <span className="inline-block mt-2 px-3 py-1 rounded bg-cyan-50 text-primary text-xs font-semibold">{recLabel}</span>}
+          </div>
+        )}
+      </div>
+      {info && value && (
+        <div className={`flex items-center gap-2 mt-2 px-3 py-2 rounded-lg bg-slate-50 border text-xs ${info.status === 'ok' ? 'text-emerald-600 border-emerald-200' : info.status === 'warn' ? 'text-amber-600 border-amber-200' : 'text-red-500 border-red-200'}`}>
+          <span className="font-semibold">{info.msg}</span>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export function RichTextEditor({ value, onChange }: { value: string; onChange: (html: string) => void }) {
+  const editorRef = useRef<HTMLDivElement>(null)
+  const fileRef = useRef<HTMLInputElement>(null)
+  const [fontColor, setFontColor] = useState('#0e7490')
+
+  useEffect(() => {
+    if (editorRef.current && value && !editorRef.current.innerHTML) {
+      editorRef.current.innerHTML = value
+    }
+  }, [])
+
+  const exec = (cmd: string, val: string | null = null) => {
+    document.execCommand(cmd, false, val || undefined)
+    editorRef.current?.focus()
+    handleChange()
+  }
+
+  const handleChange = () => {
+    if (editorRef.current) onChange(editorRef.current.innerHTML)
+  }
+
+  const handleImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0]
+    if (!f) return
+    const reader = new FileReader()
+    reader.onload = (ev) => exec('insertImage', ev.target?.result as string)
+    reader.readAsDataURL(f)
+  }
+
+  return (
+    <div>
+      <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleImgFile} />
+      <div className="rte-toolbar">
+        <button className="rte-btn" onClick={() => exec('bold')} title="Bold"><b>B</b></button>
+        <button className="rte-btn" onClick={() => exec('italic')} title="Italic"><i>I</i></button>
+        <button className="rte-btn" onClick={() => exec('underline')} title="Underline"><u>U</u></button>
+        <div className="rte-divider" />
+        <input type="color" className="rte-color" value={fontColor} onChange={(e) => { setFontColor(e.target.value); exec('foreColor', e.target.value) }} />
+        <div className="rte-divider" />
+        <button className="rte-btn" onClick={() => { const u = prompt('URL:'); if (u) exec('createLink', u) }}>Link</button>
+        <button className="rte-btn" onClick={() => fileRef.current?.click()}>Img</button>
+        <div className="rte-divider" />
+        <button className="rte-btn" onClick={() => exec('formatBlock', '<h2>')}>H</button>
+        <button className="rte-btn" onClick={() => exec('formatBlock', '<p>')}>P</button>
+      </div>
+      <div className="rte-editor" ref={editorRef} contentEditable suppressContentEditableWarning onInput={handleChange} />
+    </div>
+  )
+}
+
+export function ShareButtons({ title, articleId }: { title: string; articleId: number }) {
+  const shareUrl = typeof window !== 'undefined' ? `${window.location.origin}/article/${articleId}` : ''
+  return (
+    <div className="flex items-center gap-3 mt-7 pt-5 border-t border-slate-200">
+      <span className="text-sm font-semibold text-slate-500">แชร์</span>
+      <button onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(title)}`, '_blank', 'width=600,height=400')} className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-white text-sm font-semibold bg-[#1877F2] hover:opacity-90 transition">Facebook</button>
+      <button onClick={() => window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(title)}`, '_blank', 'width=600,height=400')} className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-white text-sm font-semibold bg-[#06C755] hover:opacity-90 transition">LINE</button>
+    </div>
+  )
+}
