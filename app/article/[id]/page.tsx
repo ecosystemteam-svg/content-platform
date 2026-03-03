@@ -41,7 +41,11 @@ export default function ArticlePage() {
         <span className="px-2 py-1 rounded-md bg-primary/10 text-primary text-xs font-semibold">{(article.views + 1).toLocaleString()} views</span>
       </header>
 
-      {article.cover_image && <img src={article.cover_image} alt="" className="w-full h-56 object-cover" />}
+      {article.cover_image && (
+        <div className="w-full bg-slate-100">
+          <img src={article.cover_image} alt="" className="w-full aspect-square object-contain" />
+        </div>
+      )}
 
       <div className="px-5 py-5 pb-10">
         {cat && <span className="inline-block px-2 py-0.5 rounded text-[10px] font-bold text-white mb-2" style={{ background: cat.color }}>{cat.name}</span>}
